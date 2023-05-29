@@ -1,0 +1,59 @@
+def get_period(start_period, end_period):
+
+    min_year = int(start_period[:2])
+
+    min_month = int(start_period[2:])
+
+    max_year = int(end_period[:2])
+
+    max_month = int(end_period[2:])
+
+    if (min_month > 12 or min_month < 1 or max_month > 12 or max_month < 1):
+
+        print("input incorrect")
+
+        return get_period()
+
+    if min_month != 1:
+
+        min_period = dt.datetime.strptime(
+
+            str(min_year).zfill(2) + str(min_month - 1).zfill(2), "%y%m"
+
+        )
+
+    else:
+
+        min_period = dt.datetime.strptime(
+
+            str(min_year - 1).zfill(2) + "12", "%y%m"
+
+        )
+
+    if max_month < 11:
+
+        max_period = dt.datetime.strptime(
+
+            str(min_year).zfill(2) + str(max_month + 2).zfill(2), "%y%m"
+
+        ) - dt.timedelta(weeks=1)
+
+    else:
+
+        max_period = dt.datetime.strptime(
+
+            str(max_year + 1).zfill(2) + str(max_month - 10).zfill(2), "%y%m"
+
+        ) - dt.timedelta(weeks=1)
+
+    return [
+
+        int(dt.datetime.strftime(min_period, "%Y%V")),
+
+        int(dt.datetime.strftime(max_period, "%Y%V")),
+
+    ]
+
+print(get_period("2202", "2203"))
+
+print(get_period("2201", "2202"))
